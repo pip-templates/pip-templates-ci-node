@@ -1,0 +1,15 @@
+FROM pipdevs/node:8.4.0-python
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+RUN npm -g config set user root \
+    && npm install -g typedoc@^0.11.1 \
+    && npm install -g git+https://github.com/hobbyguy77/typedoc-plugin-external-module-name.git
+
+# Copy the entire project
+COPY . .
+
+# Generate docs
+RUN typedoc --out docs src --mode modules --excludeExternals --excludePrivate --target ES6 --ignoreCompilerErrors
